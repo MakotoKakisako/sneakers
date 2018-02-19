@@ -12,7 +12,7 @@ module Sneakers
       to_queue = options.delete(:to_queue)
       options[:routing_key] ||= to_queue
       Sneakers.logger.info {"publishing <#{msg}> to [#{options[:routing_key]}]"}
-      Sneakers.thread_logger.info "■■■■■■■■■■■■■■■■■■■■"
+      Sneakers.logger.info "■■■■■■■■■■■■■■■■■■■■"
       @exchange.publish(msg, options)
     end
 
