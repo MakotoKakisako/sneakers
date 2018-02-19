@@ -55,6 +55,14 @@ module Sneakers
     @logger
   end
 
+  def thread_logger=(thread_logger)
+    @thread_logger = thread_logger
+  end
+
+  def thread_logger
+    @thread_logger
+  end
+
   def publish(msg, routing)
     @publisher.publish(msg, routing)
   end
@@ -80,9 +88,12 @@ module Sneakers
   def setup_general_logger!
     if [:info, :debug, :error, :warn].all?{ |meth| CONFIG[:log].respond_to?(meth) }
       @logger = CONFIG[:log]
+      @thread_logger = "logs/issue2605_thread.log"
     else
       @logger = ServerEngine::DaemonLogger.new(CONFIG[:log])
       @logger.formatter = Sneakers::Support::ProductionFormatter
+      @thread_logger = ServerEngine::DaemonLogger.new("logs/issue2605_thread.log")
+      @thread_logger.formatter = Sneakers::Support::ProductionFormatter
     end
   end
 
@@ -96,4 +107,3 @@ module Sneakers
     @publisher = Sneakers::Publisher.new
   end
 end
-
